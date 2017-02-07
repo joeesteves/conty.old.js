@@ -1,0 +1,52 @@
+{
+  "name": "conty.js",
+  "version": "1.0.0",
+  "description": "Accounting JS library, containing helpers and classes for generating consistent and balanced entries",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "tsc",
+    "test": "jasmine",
+    "ci": "git-cz",
+    "commit": "git-cz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ponyesteves/conty.js.git"
+  },
+  "keywords": [
+    "accounting",
+    "helpers",
+    "installments",
+    "instalments",
+    "series",
+    "payments",
+    "dues",
+    "transactions",
+    "contabilidad",
+    "cuotas",
+    "series",
+    "pagos"
+  ],
+  "author": "@ponyesteves",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ponyesteves/conty.js/issues"
+  },
+  "homepage": "https://github.com/ponyesteves/conty.js#readme",
+  "devDependencies": {
+    "@types/jasmine": "^2.5.41",
+    "commitizen": "^2.9.5",
+    "cz-conventional-changelog": "^1.2.0",
+    "ghooks": "^2.0.0",
+    "jasmine": "^2.5.3",
+    "typescript": "^2.1.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    },
+    "ghooks": {
+      "pre-commit": "npm run test"
+    }
+  }
+}
