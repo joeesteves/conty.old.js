@@ -1,5 +1,5 @@
 export const DateHelpers = {
-  dateToString: (date): string => new Date().toISOString().slice(0, 10)
+  dateToString: (date): string => date.toISOString().slice(0, 10)
 }
 
 export const ModelHelpers = {
