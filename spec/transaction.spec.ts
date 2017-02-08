@@ -31,7 +31,7 @@ describe("Transactions Defaults", () => {
 
 })
 
-describe("Transactions Validations", () => {
+describe("Transactions Integrated Validations", () => {
   it("Throws error if no items are passed, must have one", () => {
     expect(() => new Transaction({ type: 'expense' })).toThrowError(/Transaction (.|\s)* at least one/)
   })
@@ -50,6 +50,5 @@ describe("Transactions Validations", () => {
   it("Throws composed error if no items are passed and no type is not supported", () => {
     expect(() => new Transaction({type: 'foo'})).toThrowError(/Transaction (.|\s)* at least one(.|\s)*only support for:/)
   })
-
 
 })
