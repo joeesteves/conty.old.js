@@ -1,4 +1,4 @@
-import { ModelHelpers, DateHelpers, FunctionalHelpers } from './helpers'
+import { ModelHelpers, DateHelpers, FunctionalHelpers, ErrorHelpers, ValidationHelper } from './helpers'
 
 export class Transaction {
   _id?: string
@@ -11,14 +11,11 @@ export class Transaction {
   installmentsQty?: number
   seriesQty?: number
   seriesId?: string
-  errors?:iError[]
+  errors?: iError[]
   constructor(initObj: Transaction) {
     // sets Defaults for undefined values
     initObj.errors = []
     initObj = Transaction.validate(initObj)
-    if(initObj.errors.length > 0){
-      Transaction.throwError(Transaction.formatError(initObj.errors))
-    }
     initObj._id = initObj._id || ModelHelpers.generateId(this.constructor.name)
     initObj.date = initObj.date || DateHelpers.dateToString(new Date())
     initObj.installmentsQty = initObj.installmentsQty || 1
@@ -30,11 +27,13 @@ export class Transaction {
 
   static validate = Transaction.validationCompose(
     Transaction.checkItems,
-    Transaction.checkType
+    // Transaction.checkType,
+    ValidationHelper.checkPresenceAndValueOf({propertieName: 'type', validValues: ['expense', 'income', 'recurrent expense', 'recurrent income', 'payment', 'collection']}).fn,
+    Transaction.finalCheck
   )
 
-  private static validationCompose(...fns) {
-    return FunctionalHelpers.compose(...fns)
+  private static validationCompose(fn,...fns) {
+    return FunctionalHelpers.compose(fn,...fns)
   }
 
   private static checkItems(initObj: Transaction): Transaction {
@@ -56,14 +55,12 @@ export class Transaction {
     return initObj
   }
 
-  private static throwError(msg: string) {
-    throw new Error(`Transaction Error: ${msg}`)
+  private static finalCheck(initObj: Transaction): Transaction {
+    if(initObj.errors.length > 0){
+      ErrorHelpers.throwError('Transaction', ErrorHelpers.formatError(initObj.errors))
+    }
+    return initObj
   }
-
-  private static formatError(errors: iError[]): string {
-    return errors.map(error => `\n(${error.scope}) \n\t ${error.message}`).join('')
-  }
-
   /** --- END VALIDATION SECTION --- */
 
 }
@@ -74,9 +71,4 @@ class Item {
   importe: number
   organizationId: number
   dueDate: string
-}
-
-interface iError {
-  scope:string
-  message: string
 }
