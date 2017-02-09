@@ -4,7 +4,7 @@
   "description": "Accounting JS library, containing helpers and classes for generating consistent and balanced entries",
   "main": "index.js",
   "scripts": {
-    "pretest": "tsc",
+    "pretest": "find . -maxdepth 2 -name *.js -not -path './node_modules/*' -exec rm {} \\; && tsc",
     "test": "jasmine",
     "ci": "git-cz",
     "commit": "git-cz"
@@ -35,6 +35,7 @@
   "homepage": "https://github.com/ponyesteves/conty.js#readme",
   "devDependencies": {
     "@types/jasmine": "^2.5.41",
+    "@types/node": "^7.0.5",
     "commitizen": "^2.9.5",
     "cz-conventional-changelog": "^1.2.0",
     "ghooks": "^2.0.0",
