@@ -1,20 +1,19 @@
-import { ModelHelpers, DateHelpers, FunctionalHelpers, ErrorHelpers, ValidationHelper } from './helpers'
+import { ModelHelpers, DateHelpers, ErrorHelpers, ValidationHelper } from './helpers'
 
-export class Transaction {
+export class Transaction implements iModel {
   _id?: string
   _rev?: string
   date?: string //Date ISOString
-  type?: string
+  type: string
   organizationId?: number
   description?: string
-  items?: Item[]
+  items: Item[]
   installmentsQty?: number
   seriesQty?: number
   seriesId?: string
   errors?: iError[]
   constructor(initObj: Transaction) {
     // sets Defaults for undefined values
-    initObj.errors = []
     initObj = Transaction.validate(initObj)
     initObj._id = initObj._id || ModelHelpers.generateId(this.constructor.name)
     initObj.date = initObj.date || DateHelpers.dateToString(new Date())
@@ -25,16 +24,11 @@ export class Transaction {
 
   /** --- BEGIN VALIDATION SECTION --- */
 
-  static validate = Transaction.validationCompose(
-    Transaction.checkItems,
-    // Transaction.checkType,
+  static validate = ValidationHelper.composeValidations(
+    ValidationHelper.checkPresenceAndLengthOf({propertieName: 'items', minLength: 1}).fn,
     ValidationHelper.checkPresenceAndValueOf({propertieName: 'type', validValues: ['expense', 'income', 'recurrent expense', 'recurrent income', 'payment', 'collection']}).fn,
-    Transaction.finalCheck
+    ValidationHelper.throwErrors({origin: 'Transaction'}).fn
   )
-
-  private static validationCompose(fn,...fns) {
-    return FunctionalHelpers.compose(fn,...fns)
-  }
 
   private static checkItems(initObj: Transaction): Transaction {
     const scope = 'Items parameter'
