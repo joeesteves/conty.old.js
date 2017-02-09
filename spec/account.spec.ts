@@ -18,3 +18,10 @@ describe("Account Defaults", () => {
 })
 
 
+describe("Account Validations", () => {
+  it("Throws error if type is not valid", () => {
+    expect(() => new Account({name: "OrangeCard", type: "blue"})).toThrowError(/Account (.|\s)* only support for/)
+  })
+})
+
+
