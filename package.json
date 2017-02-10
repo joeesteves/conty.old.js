@@ -4,7 +4,7 @@
   "description": "Accounting JS library, containing helpers and classes for generating consistent and balanced entries",
   "main": "index.js",
   "scripts": {
-    "pretest": "find . -maxdepth 2 -name *.js -not -path './node_modules/*' -exec rm {} \\; && tsc",
+    "pretest": "find . -maxdepth 2 -name *.js -not -path './node_modules/*' -exec rm {} \\; && echo -n TSC: & tsc -v && tsc",
     "test": "jasmine",
     "ci": "git-cz",
     "commit": "git-cz"
